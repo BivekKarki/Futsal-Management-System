@@ -7,4 +7,6 @@ app_name = "home"
 
 urlpatterns = [
     path('', homeview, name='homepage'),
+
+
 ]
