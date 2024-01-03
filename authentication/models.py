@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -12,3 +13,9 @@ class Consumer(models.Model):
 
     def __str__(self):
         return "%s   %s" % (self.id, self.name)
+
+
+class Profile(AbstractUser):
+    phone = models.CharField(max_length=50, unique=True)
+
+    USERNAME_FIELD = 'phone'
