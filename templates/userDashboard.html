@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<p>welcome {{ username }}</p>
+<p>welcome </p>
+{% if success_message %}
+        <div class="alert alert-success">
+            {{ success_message }}
+        </div>
+    {% endif %}
 </body>
 </html>
