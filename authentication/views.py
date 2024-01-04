@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 from authentication.models import Consumer
@@ -13,7 +14,7 @@ def consumer_login_view(request):
         phone = request.POST.get('phone')
         password = request.POST.get('password')
 
-        user = authenticate(phone=phone, password=password)
+        user = authenticate(username=phone, password=password)
         if user is not None:
             login(request, user)
             # messages.info(request, f"You are now logged in as {username}.")
@@ -22,11 +23,18 @@ def consumer_login_view(request):
             print("no user")
             messages.error(request, "Invalid phone or password.")
 
+        # print(f"Phone Number: {phone}")
         # try:
-        #     consumer = Consumer.objects.filter(phone=phone, password=password)
-        #     print(consumer)
-        #     return redirect("/authentication/consumer_dashboard")
-        # except:
+        #     user = Consumer.objects.get(phone=phone)
+        #     print(type(user))
+        #     if user.check_password(password):
+        #         login(request, user)
+        #         # Redirect to a success page or dashboard
+        #         return redirect("/authentication/consumer_dashboard")
+        #     else:
+        #         # Incorrect password
+        #         return render(request, 'login.html', {'error': 'Invalid password'})
+        # except Consumer.DoesNotExist:
         #     print("error")
         #     return render(request=request, template_name="login.html")
 
@@ -59,10 +67,19 @@ def consumer_registration_formview(request):
 
         if password != c_password:
             return render(request, "userSignupForm.html", {"message": "password not matching"})
+        if Consumer.objects.filter(phone=phone).exists():
+            messages.error(request, "This phone number is already exist!")
+            return render(request, "userSignupForm.html")
 
-        print(id)
+
+
+        consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
+        consumer.first_name = name
+        consumer.phone = phone
+        consumer.save()
 
         Consumer.objects.create(
+            user=consumer,
             name=name,
             phone=phone,
             email=email,
@@ -70,6 +87,9 @@ def consumer_registration_formview(request):
             password=password
         )
         # print("user created!")
+        user = authenticate(request, username=phone, password=password)
+        login(request, user)
+
         messages.success(request, 'Registration successful! You can now log in.')
         return redirect("/authentication/consumer_login")
 
