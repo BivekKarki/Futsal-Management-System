@@ -1,10 +1,13 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser, User
 from django.db import models
 
 
 # Create your models here.
 class Consumer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
+    consumer_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
@@ -12,7 +15,7 @@ class Consumer(models.Model):
     password = models.CharField(max_length=50)
 
     def __str__(self):
-        return "%s   %s" % (self.id, self.name)
+        return "%d   %s %s  %s  %s" % (self.consumer_id, self.name, self.phone, self.email, self.password)
 
 
 

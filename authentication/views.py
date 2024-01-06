@@ -15,7 +15,12 @@ def consumer_login_view(request):
         password = request.POST.get('password')
 
         try:
-            user = authenticate(username=phone, password=password)
+            if User.objects.filter(username=phone).exists():
+                username = User.objects.get(username=phone)
+                user = authenticate(username=username, password=password)
+            else:
+                messages.error(request, "User does not exist")
+                return redirect("/authentication/consumer_login")
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Login successful. Welcome!')
@@ -25,6 +30,7 @@ def consumer_login_view(request):
                 messages.error(request, "Invalid phone or password.")
         except User.DoesNotExist:
             messages.error(request, 'User does not exist')
+
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"login_form": form})
 

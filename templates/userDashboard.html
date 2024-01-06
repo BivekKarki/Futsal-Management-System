@@ -5,11 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-<p>welcome </p>
-{% if success_message %}
-        <div class="alert alert-success">
-            {{ success_message }}
-        </div>
+<p>welcome </p>{% if messages %}
+        
+            {% for message in messages %}
+                <div class="alert">
+                    <p style="color: green;">{{ message }}</p> 
+                </div>
+                    
+              
+            {% endfor %}
+        
     {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>
