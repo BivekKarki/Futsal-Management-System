@@ -6,12 +6,12 @@ from django.db import models
 
 # Create your models here.
 class Consumer(models.Model):
-    consumer_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    consumer_id = models.IntegerField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
-    address = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50) # emailfield(length=250)
+    address = models.TextField(max_length=50) #textfield
     password = models.CharField(max_length=50)
 
     def __str__(self):
