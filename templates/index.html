@@ -1,17 +1,407 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.transitions.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   </head>
   <body>
-    <h1>Hello, world!</h1>
-    
-    <a href="{% url 'authentication:consumer_login'%}" class="btn btn-primary">Login</a>
-    <a href="{% url 'authentication:consumer_registration_form'%}" class="btn btn-primary">Signup</a>
-    <a href="{% url 'authentication:consumer_dashboard'%}" class="btn btn-primary">Dashboard</a>
+    <nav class="menu-wrapper navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" href="#">LOGO</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ">
+        <li class="nav-item">
+          <a class="nav-link " data-target="home" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-target="courts" href="#">Courts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-target="about" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-target="contacts" href="#">Contact</a>
+        </li>
+      </ul>
+      <ul class="right-nav">
+        <li class="nav-item">
+          <a class="nav-link login-btn" href="">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link signup-btn" href="">SignUp</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+<!-- /*<========================================= Main banner =========================================>*/ -->
+<section class="banner">
+  <div class="container">
+     <div class="row justify-content-between align-items-center">
+      <div class="col-md-12 ">
+        <div class="main-bcontent" >
+          <div class="banner-content">
+          <h1 class="main-text">ENHANCE YOUR <br>FUTSAL EXPERIENCE <br>WITH US</h1>
+          <p class="banner-ptext">Manage your futsal matches effortlessly with our easy-to-use online <br>booking system. Save time and enjoy the game!</p>
+          <div>
+            <a href="" class="join-btn">JOIN NOW</a>
+          </div>
+        </div>
+        <div class="keeper-image">
+          <img src="./images/keeper.png" alt="keeper-image" />
+        </div>
+      </div>
+     </div>
+  </div>
+  </div>
+</section>
+
+<!-- /*<========================================= Futsal court scroll =========================================>*/ -->
+  <section class="court-scroll-section">
+    <div class="container text-center">
+      <div class="test-txt">
+          <h2>Our Courts</h2>
+          <p>Explore our range of premium futsal courts, find the perfect venue for your next game.</p>
+        </div>
+      <div id="court-slider" class="court-scroll-single owl-carousel">
+
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="court-logo-img">
+              <img src="./images/f1.jpeg" alt="image">
+              <p class="court-desc">Prime futsal</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="court-logo-img">
+              <img src="./images/f2.jpeg" alt="image">
+              <p class="court-desc">Prime futsal</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="court-logo-img">
+              <img src="./images/f3.jpeg" alt="image">
+              <p class="court-desc">Prime futsal</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="court-logo-img">
+              <img src="./images/f4.jpeg" alt="image">
+              <p class="court-desc">Prime futsal</p>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+<!-- +6569725171 -->
+<!-- /*<========================================= Futsal Reservation Section =========================================>*/ -->
+  <section class="futsal-reservation-section">
+    <div class="container">
+      <div class="reservation-single row">
+        <div class="reserve-left-image col-md-6">
+        <img src="./images/reserve.jpg" alt="futsal-image">
+      </div>
+      <div class="reserve-right-text col-md-6">
+        <h4>Online Futsal Reservation System</h4>
+        <p>Introducing the Futsal Management System, the ultimate solution for hassle-free futsal bookings. Located in Kathmandu, our website offers a seamless experience for futsal enthusiasts to easily reserve their preferred slots. With our user-friendly interface and efficient management tools, we ensure a smooth and convenient process from start to finish. <br>
+        Say goodbye to the complexities of manual bookings and embrace the simplicity of our cutting-edge system. Join us today and elevate your futsal experience with the Futsal Management System.</p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- /*<========================================= Futsal Services Section =========================================>*/ -->
+<section class="service-section">
+  <div class="container">
+    <div class="service-single">
+      <div class="test-txt">
+          <h2>Our Services</h2>
+          <p>Explore our comprehensive court management services for hassle-free futsal court administration.</p>
+        </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="service-single-card">
+            <div class="service-card-image image1">
+              <!-- <img src="./images/reserve.jpg" alt="futsal-image"> -->
+              <p>Check the availability of futsal courts in <br>real-time</p>
+            </div>
+
+
+          </div>
+          <p class="service-card-label">Real-Time Availability</p>
+        </div>
+
+        <div class="col-md-4">
+          <div class="service-single-card">
+            <div class="service-card-image image2">
+              <!-- <img src="./images/reserve.jpg" alt="futsal-image"> -->
+              <p>Book your preferred futsal court with just a <br>few clicks</p>
+            </div>
+          </div>
+          <p class="service-card-label">Easy Booking</p>
+        </div>
+
+        <div class="col-md-4">
+          <div class="service-single-card">
+            <div class="service-card-image image3">
+              <!-- <img src="./images/reserve.jpg" alt="futsal-image"> -->
+              <p>Seamlessly make payments for your court <br>bookings</p>
+            </div>
+          </div>
+          <p class="service-card-label">Payment Integration</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- /*<========================================= Contact Section =========================================>*/ -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-single">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="contact-left-text">
+              <h4>Contact Us</h4>
+              <p>Fill out the form below to get in touch with us. We are here to help you with any questions or inquiries you may have.</p>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-4">
+            <div class="contact-right">
+              <form method="">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                    <label for="examplename">Name</label>
+                    <input type="text" class="form-control" id="examplename" placeholder="">
+                  </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Email </label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  </div>
+                </div>
+
+                 <div class="row">
+                   <div class="col-md-12">
+                     <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea  class="form-control" id="message" placeholder=""></textarea>
+                  </div>
+                   </div>
+                 </div>
+                 <div class="contact-btn">
+                   <button type="submit" class="btn btn-primary">Submit</button>
+                 </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- /*<========================================= Testimonial Section =========================================>*/ -->
+    <section class="testimonial-section">
+      <div class="container">
+        <div class="testimonial-single">
+          <div class="test-txt">
+          <h2>Testimonials</h2>
+        </div>
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class=" col-md-10">
+                <div id="testimonial-slider" class="owl-carousel owl-theme">
+                    <div class="testimonial">
+                        <div class="pic">
+                            <img src="https://bestjquery.com/tutorial/testimonial/demo71/images/img-3.jpg">
+                        </div>
+                        <h3 class="title">Williamson</h3>
+                        <span class="post">Web Developer</span>
+                        <p class="description">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium ad asperiores at atque culpa dolores eaque fugiat hic illo ipsam ipsum minima modi necessitatibus nemo officia, omnis perferendis placeat sit vitae, consectetur adipisicing elit ipsam.
+                        </p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="pic">
+                            <img src="https://bestjquery.com/tutorial/testimonial/demo71/images/img-3.jpg">
+                        </div>
+                        <h3 class="title">Kristina</h3>
+                        <span class="post">Web Designer</span>
+                        <p class="description">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium ad asperiores at atque culpa dolores eaque fugiat hic illo ipsam ipsum minima modi necessitatibus nemo officia, omnis perferendis placeat sit vitae, consectetur adipisicing elit ipsam.
+                        </p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="pic">
+                            <img src="https://bestjquery.com/tutorial/testimonial/demo71/images/img-3.jpg">
+                        </div>
+                        <h3 class="title">Kristina</h3>
+                        <span class="post">Web Designer</span>
+                        <p class="description">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium ad asperiores at atque culpa dolores eaque fugiat hic illo ipsam ipsum minima modi necessitatibus nemo officia, omnis perferendis placeat sit vitae, consectetur adipisicing elit ipsam.
+                        </p>
+                    </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- /*<========================================= Footer Section =========================================>*/ -->
+      <section class="footer-section">
+        <div class="container">
+          <div class="footer-single">
+            <div class="row">
+              <div class="col-md-4">
+                <a class="navbar-brand" href="">LOGO</a>
+              </div>
+              <div class="col-md-4">
+                <ul>
+                  <li><a href="">Our Services</a></li>
+                  <li><a href="">About Us</a></li>
+                  <li><a href="">Courts</a></li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <div class="footer-social-media">
+                  <a href=""><i class="fab fa-facebook"></i></a>
+                  <a href=""><i class="fab fa-instagram"></i></a>
+                  <a href=""><i class="fab fa-twitter"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="copyright">
+              <p>© All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="scrollup">
+      <a href="#"><i class="fas fa-level-up-alt"></i></a>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" integrity="sha512-Tn2m0TIpgVyTzzvmxLNuqbSJH3JP8jm+Cy3hvHrW7ndTDcJ1w5mBiksqDBb8GpE2ksktFvDB/ykZ0mDpsZj20w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      const navLinks = document.querySelectorAll('.nav-item a');
+
+      navLinks.forEach(function(navLink) {
+        navLink.addEventListener('click', function(event) {
+          event.preventDefault(); // Prevent the default behavior of the link
+
+          // Remove 'active' class from all nav items
+          navLinks.forEach(function(link) {
+            link.classList.remove('active');
+          });
+
+          // Add 'active' class to the clicked nav item
+          navLink.classList.add('active');
+        });
+      });
+    });
+$(document).ready(function(){
+    $('#court-slider').owlCarousel({
+    loop:true,
+    autoplay:true,
+    nav:true,
+
+    responsiveClass:true,
+    responsive:{
+        0:{
+            items:1,
+            nav:true
+        },
+        600:{
+            items:2,
+            nav:true
+        },
+        1000:{
+            items:3,
+            nav:true
+        }
+    }
+})
+
+});
+    $(document).ready(function(){
+    $("#testimonial-slider").owlCarousel({
+        loop:true,
+    autoplay:true,
+    nav:false,
+    dots:true,
+    animateIn:"owl-backSlide-in",
+    animateOut: "owl-backSlide-out",
+    responsiveClass:true,
+    pagination:true,
+    transitionStyle:"backSlide",
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:1
+        },
+        1000:{
+            items:1
+        }
+    }
+})
+
+});
+
+
+    $(window).scroll(function(){
+  if($(this).scrollTop()>80)
+  {
+    $(".menu-wrapper").addClass("white");
+    $(".scrollup").show();
+  }
+  else
+  {
+    $(".menu-wrapper").removeClass("white");
+    $(".scrollup").hide();
+  }
+})
+
+</script>
   </body>
 </html>
+{#<a href="{% url 'authentication:consumer_dashboard'%}" class="btn btn-primary">Dashboard</a>#}
