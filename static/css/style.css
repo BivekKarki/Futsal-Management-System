@@ -231,27 +231,27 @@ img{
     height: 100%;
     width: 100%;
     content: "";
-    background-color: rgba(1,10,28,0.3);
-    opacity: 1;
+    background-color: rgba(1,10,28,0.5);
+    opacity: 0;
     z-index: 1;
     transition: all .3s ease-out 0s;
 }
 .service-card-image:hover:before{
-	opacity: 0;
+	opacity: 1;
 }
 
 .image1{
-	background-image: url(images/service1.jpg);
+	background-image: url("../images/service1.jpg");
 	transform: scale(1.06);
     transition: all .4s ease-out 0s;
 }
 .image2{
-	background-image: url(images/service2.jpg);
+	background-image: url("../images/service2.jpg");
 	transform: scale(1.06);
     transition: all .4s ease-out 0s;
 }
 .image3{
-	background-image: url(images/service3.jpeg);
+	background-image: url("../images/service3.jpeg");
 	transform: scale(1.06);
     transition: all .4s ease-out 0s;
 }
