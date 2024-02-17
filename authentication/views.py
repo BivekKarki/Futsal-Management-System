@@ -83,3 +83,9 @@ def consumer_registration_formview(request):
         return redirect("/authentication/consumer_login")
 
     return render(request, "userSignupForm.html")
+
+
+
+# ====================================== Forgot Password ====================================
+def forgot_password_view(request):
+    return render(request, 'forgot_password.html')
