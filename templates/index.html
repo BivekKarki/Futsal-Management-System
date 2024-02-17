@@ -37,10 +37,10 @@
       </ul>
       <ul class="right-nav">
         <li class="nav-item">
-          <a class="nav-link login-btn" href="">Login</a>
+          <a href="{% url 'authentication:consumer_login'%}" class="nav-link login-btn">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link signup-btn" href="">SignUp</a>
+          <a href="{% url 'authentication:consumer_registration_form'%}" class="nav-link signup-btn" >SignUp</a>
         </li>
       </ul>
 

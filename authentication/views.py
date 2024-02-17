@@ -9,6 +9,7 @@ from authentication.models import Consumer
 
 # Create your views here.
 def consumer_login_view(request):
+    print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
     if request.method == "POST":
         print("Hello bivek")
         phone = request.POST.get('phone')

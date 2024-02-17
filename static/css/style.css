@@ -52,7 +52,7 @@ img{
 .navbar-nav .nav-link.active{
 	color: #4AFF93;
 }
-.nav-item:hover .nav-link{
+.navbar-nav .nav-item:hover .nav-link{
 	color: #4AFF93;
 }
 .signup-btn{
