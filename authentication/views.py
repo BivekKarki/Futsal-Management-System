@@ -92,10 +92,11 @@ def consumer_registration_formview(request):
 def forgot_password_view(request):
     return render(request, 'forgot_password.html')
 
+
 # ====================================== Send OTP ====================================
 def send_otp_view(request):
     error_message = None
-    otp = random.randint(11111,99999)
+    otp = random.randint(11111, 99999)
     email = request.POST.get('email')
     user_email = Consumer.objects.filter(email=email)
     if user_email:
@@ -107,16 +108,17 @@ def send_otp_view(request):
         subject = "Welcome to Python World"
         email_from = settings.EMAIL_HOST_USER
         email_to = [email]
-        message = EmailMessage(subject, html_message, email_from)
+        message = EmailMessage(subject, html_message, email_from, email_to)
         message.send()
         messages.success(request, "Your one time password Send To Your Email")
-        return render('enter_otp.html', {'error_message': error_message})
+        return redirect('authentication:enter_otp')
     else:
         error_message = "Invalid Email, Please Enter Correct Email"
-        return render(request, 'forgot_password.html')
+        return render(request, 'forgot_password.html', {"error_message": error_message})
+
 
 # ======================= Enter OTP ========================================
-def enter_otp(request):
+def enter_otp_view(request):
     error_message = None
     if request.session.has_key('email'):
         email = request.session['email']
@@ -130,8 +132,10 @@ def enter_otp(request):
             elif not user_otp == otp:
                 error_message = "Invalid OTP"
             if not error_message:
-                return redirect("password_reset")
-
+                return redirect('authentication:password_reset')
         return render(request, 'enter_otp.html', {'error_message': error_message})
     else:
         return render(request, 'forgot_password.html')
+
+
+

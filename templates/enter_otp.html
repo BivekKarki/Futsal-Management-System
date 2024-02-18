@@ -7,7 +7,25 @@
 </head>
 <body>
 <h1>Enter your OTP</h1>
+{% if messages %}
+{% for message in messages %}
+<div id="message" class="container">
+   <div style="color: green;" class="alert alert-success alert-dismissible text-center" role="alert">
+      {{message}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+</div>
+{% endfor %}
+{% endif %}
+{% if error_message %}
+        <div class="messages">
+               <p style="color: red;">{{ error_message }}</p>
+        </div>
+    {% endif %}
 <form method="post">
+    {% csrf_token %}
   <div class="mb-3">
     <label for="otp" class="form-label">OTP</label>
     <input type="text" name="otp" class="form-control" id="otp" aria-describedby="emailHelp">
