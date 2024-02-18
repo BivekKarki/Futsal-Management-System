@@ -118,3 +118,20 @@ def send_otp_view(request):
 # ======================= Enter OTP ========================================
 def enter_otp(request):
     error_message = None
+    if request.session.has_key('email'):
+        email = request.session['email']
+        user = Consumer.objects.filter(email=email)
+        for u in user:
+            user_otp = u.otp
+        if request.method == "POST":
+            otp = request.POST.get('otp')
+            if not otp:
+                error_message = "OTP is Required"
+            elif not user_otp == otp:
+                error_message = "Invalid OTP"
+            if not error_message:
+                return redirect("password_reset")
+
+        return render(request, 'enter_otp.html', {'error_message': error_message})
+    else:
+        return render(request, 'forgot_password.html')

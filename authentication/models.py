@@ -13,6 +13,8 @@ class Consumer(models.Model):
     email = models.EmailField(max_length=50) # emailfield(length=250)
     address = models.TextField(max_length=50) #textfield
     password = models.CharField(max_length=50)
+    otp = models.CharField(max_length=25, default='0000')
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return "%d   %s %s  %s  %s" % (self.consumer_id, self.name, self.phone, self.email, self.password)
