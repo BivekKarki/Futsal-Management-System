@@ -138,4 +138,28 @@ def enter_otp_view(request):
         return render(request, 'forgot_password.html')
 
 
+# =========================== Change Password ===================================
+def password_reset_view(request):
+    error_message = None
+    if request.session.has_key('email'):
+        email = request.session['email']
+        user = Consumer.objects.get(email=email)
+        if request.method == "POST":
+            new_password = request.POST.get('new_password')
+            confirm_new_password = request.POST.get('confirm_new_password')
 
+            if not new_password:
+                error_message = "Please enter the password"
+            elif not confirm_new_password:
+                error_message = "Please enter the confirm password"
+            elif new_password != confirm_new_password:
+                error_message = "Password Mismatched"
+            elif new_password == user.password:
+                error_message = "Cannot use old password, try new password"
+            elif not error_message:
+                user.password = new_password
+                user.save()
+                messages.success(request, "Password Changed Successfully")
+                return redirect("authentication:consumer_login")
+
+    return render(request, 'password_reset.html', {"error_message": error_message})
