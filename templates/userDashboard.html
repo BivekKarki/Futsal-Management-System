@@ -13,6 +13,32 @@
         
     {% endif %}
     
-    <a href="{% url 'authentication:consumer_update' %}"></a>
+{#    {% for consumer in consumers %}#}
+    <h1>Hello {{ consumers.name }}</h1>
+        
+        
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">{{ consumer.consumer_id }}</th>
+      <td>{{ consumers.name }}</td>
+      <td>{{ consumers.phone }}</td>
+      <td>{{ consumers.email }}</td>
+    </tr>
+   
+  </tbody>
+</table>
+    
+{#    {% endfor %}#}
+    
+    <a href="{% url 'authentication:consumer_update' %}">Update</a>
 
 {% endblock %}

@@ -65,7 +65,7 @@
         </div>
         
 
-        <form>
+        <form method="post" action="{% url 'authentication:consumer_update/{{ consumers.id }}' %}">
           <div class="row">
             <div class="col-md-2"></div>
           <div class="col-md-3  pe-4">

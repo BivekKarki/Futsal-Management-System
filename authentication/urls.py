@@ -1,7 +1,7 @@
 from django.urls import path
 
 from authentication.views import consumer_login_view, consumer_dashboardview, consumer_registration_formview, \
-    forgot_password_view, send_otp_view, enter_otp_view, password_reset_view
+    forgot_password_view, send_otp_view, enter_otp_view, password_reset_view, consumer_update_view
 
 app_name = "authentication"
 
@@ -14,4 +14,6 @@ urlpatterns = [
     path('send_otp', send_otp_view, name='send_otp'),
     path('enter_otp', enter_otp_view, name='enter_otp'),
     path('password_reset', password_reset_view, name='password_reset'),
+
+    path('consumer_update', consumer_update_view, name='consumer_update'),
 ]

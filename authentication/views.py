@@ -26,7 +26,7 @@ def consumer_login_view(request):
             phone = form.cleaned_data['phone']  # Use phone instead of email
             password = form.cleaned_data['password']
             captcha = form.cleaned_data['captcha']
-            print(captcha)
+            # print(captcha)
             # Perform reCAPTCHA validation
             if captcha:
 
@@ -40,6 +40,9 @@ def consumer_login_view(request):
                     if user is not None:
                         login(request, user)
                         messages.success(request, 'Login successful. Welcome!')
+                        consumer_profile = Consumer.objects.get(phone=phone)
+                        request.session['consumer_id'] = consumer_profile.consumer_id
+                        # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
                         return redirect("/authentication/consumer_dashboard")
                     else:
                         print("no user")
@@ -51,20 +54,49 @@ def consumer_login_view(request):
                 messages.error(request, "Invalid recaptcha")
     else:
         form = LoginForm()
-        print("invalid form")
+        # print("invalid form")
     # form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"login_form": form})
 
 
 def consumer_dashboardview(request):
     success_message = messages.get_messages(request)
-
+    consumer_id = request.session.get('consumer_id')
+    print(consumer_id)
+    consumerr = Consumer.objects.get(consumer_id=consumer_id)
+    # consumer = Consumer.objects.all()
+    print(consumerr.name)
     context = {
         'success_message': success_message,
-        'consumers': Consumer.objects.all(),
+        'consumers': consumerr,
     }
-
+    print("Dashboard")
     return render(request, 'userDashboard.html', context)
+
+
+def consumer_update_view(request):
+    consumer_phone = request.session.get("phone")
+    loggedin_user = Consumer(phone=consumer_phone)
+    print(loggedin_user)
+    if request.method == "POST":
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        address = request.POST.get('address')
+
+        consumer = Consumer(
+            name=name,
+            phone=phone,
+            email=email,
+            password=password,
+            address=address
+        )
+        consumer.save()
+        messages.success(request, 'Profile updated successfully!')
+        return redirect("consumer_dashboardview")
+
+    return render(request, 'userDashboard.html')
 
 
 def consumer_registration_formview(request):
