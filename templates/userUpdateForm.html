@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+ <style>
+          .signup-section{
+	background-color: #162732;
+	padding: 3em 0;
+    overflow: hidden;
+    color: #fff;
+}
+.signup-section .signup-header{
+	
+	margin-bottom: 2em;
+
+}
+.signup-header a{
+	color: #f5e021;
+	text-decoration: none;
+}
+.signup-header a:hover{
+	text-decoration: underline;
+}
+.signup-section .form-group{
+	padding-bottom: 2em;
+
+}
+.signup-section .form-group .form-control{
+	background-color: #162732;
+	border: 1px solid #85a0b2;
+	color: #fff;	
+}
+.signup-button{
+	padding-top: 2em;
+}
+.signup-button button{
+	padding: 10px 2em;
+	background-color: transparent;
+    border: 1px solid #4AFF93;
+    color: #4AFF93;
+}
+.signup-button button:hover{
+	background-color: #4AFF93;
+    border: 1px solid #4AFF93;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+.signup-section .form-group label{
+	padding-bottom: 1em;
+}
+      </style>
+ 
+<!-- /*<========================================= USer Update Section =========================================>*/ -->
+  <section class="signup-section">
+    <div class="container">
+      <div class="signup-single">
+        <div class="signup-header">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+              <h2>Sign Up</h2>
+              <p>Do you have account already?<a href=""> Sign in</a> </p>
+            </div>
+          </div>
+        </div>
+        
+
+        <form>
+          <div class="row">
+            <div class="col-md-2"></div>
+          <div class="col-md-3  pe-4">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name"  placeholder="Enter name">
+            </div>
+          </div>
+          <div class="col-md-3  ps-4">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" id="phone"  placeholder="Phone">
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+          <div class="col-md-3 pe-4">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" id="email"  placeholder="Email">
+            </div>
+          </div>
+          <div class="col-md-3  ps-4">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" id="address"  placeholder="Address">
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+          <div class="col-md-3 pe-4">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="text" class="form-control" id="password"  placeholder="Password">
+            </div>
+          </div>
+          <div class="col-md-3  ps-4">
+            <div class="form-group">
+              <label for="c_password">Confirm Password</label>
+              <input type="text" class="form-control" id="c_password"  placeholder="Confirm Password">
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Agree Terms and Conditions</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3">
+             <div class="signup-button">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+       
+        
+
+        </form>
+        
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}

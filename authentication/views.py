@@ -8,35 +8,51 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 
 from FutsalManagementSystem import settings
+from authentication.forms import LoginForm
 from authentication.models import Consumer
+from django_recaptcha.fields import ReCaptchaField
 
 
 # Create your views here.
 def consumer_login_view(request):
-    print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
+    # print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
     if request.method == "POST":
+        form = LoginForm(request.POST)
+        print(form.is_valid())
         print("Hello bivek")
-        phone = request.POST.get('phone')
-        password = request.POST.get('password')
+        if form.is_valid():
+            # phone = request.POST.get("phone")  # Use phone instead of email
+            # password = request.POST.get("password")
+            phone = form.cleaned_data['phone']  # Use phone instead of email
+            password = form.cleaned_data['password']
+            captcha = form.cleaned_data['captcha']
+            print(captcha)
+            # Perform reCAPTCHA validation
+            if captcha:
 
-        try:
-            if User.objects.filter(username=phone).exists():
-                username = User.objects.get(username=phone)
-                user = authenticate(username=username, password=password)
-            else:
-                messages.error(request, "User does not exist")
-                return redirect("/authentication/consumer_login")
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'Login successful. Welcome!')
-                return redirect("/authentication/consumer_dashboard")
-            else:
-                print("no user")
-                messages.error(request, "Invalid phone or password.")
-        except User.DoesNotExist:
-            messages.error(request, 'User does not exist')
+                try:
+                    if User.objects.filter(username=phone).exists():
+                        username = User.objects.get(username=phone)
+                        user = authenticate(username=username, password=password)
+                    else:
+                        messages.error(request, "User does not exist")
+                        return redirect("/authentication/consumer_login")
+                    if user is not None:
+                        login(request, user)
+                        messages.success(request, 'Login successful. Welcome!')
+                        return redirect("/authentication/consumer_dashboard")
+                    else:
+                        print("no user")
+                        messages.error(request, "Invalid phone or password.")
+                except User.DoesNotExist:
+                    messages.error(request, 'User does not exist')
 
-    form = AuthenticationForm()
+            else:
+                messages.error(request, "Invalid recaptcha")
+    else:
+        form = LoginForm()
+        print("invalid form")
+    # form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"login_form": form})
 
 
@@ -45,6 +61,7 @@ def consumer_dashboardview(request):
 
     context = {
         'success_message': success_message,
+        'consumers': Consumer.objects.all(),
     }
 
     return render(request, 'userDashboard.html', context)
