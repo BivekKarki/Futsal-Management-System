@@ -8,10 +8,10 @@ from django.db import models
 class Consumer(models.Model):
     consumer_id = models.IntegerField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     phone = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50) # emailfield(length=250)
-    address = models.TextField(max_length=50) #textfield
+    email = models.EmailField(max_length=100) # emailfield(length=250)
+    address = models.TextField(max_length=100) #textfield
     password = models.CharField(max_length=50)
     otp = models.CharField(max_length=25, default='0000')
     status = models.BooleanField(default=False)

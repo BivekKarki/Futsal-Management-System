@@ -74,7 +74,7 @@ def consumer_dashboardview(request):
     return render(request, 'userDashboard.html', context)
 
 
-def consumer_update_view(request):
+def consumer_update_view(request, consumer_id):
     consumer_phone = request.session.get("phone")
     loggedin_user = Consumer(phone=consumer_phone)
     print(loggedin_user)
@@ -86,6 +86,7 @@ def consumer_update_view(request):
         address = request.POST.get('address')
 
         consumer = Consumer(
+            consumer_id=consumer_id,
             name=name,
             phone=phone,
             email=email,

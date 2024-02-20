@@ -14,9 +14,9 @@
     {% endif %}
     
 {#    {% for consumer in consumers %}#}
-    <h1>Hello {{ consumers.name }}</h1>
-        
-        
+    <h1>Hello {{ consumers.consumer_id }}</h1>
+
+
         <table class="table">
   <thead>
     <tr>
@@ -28,7 +28,7 @@
   </thead>
   <tbody>
     <tr>
-      <th scope="row">{{ consumer.consumer_id }}</th>
+      <th scope="row">{{ consumers.consumer_id }}</th>
       <td>{{ consumers.name }}</td>
       <td>{{ consumers.phone }}</td>
       <td>{{ consumers.email }}</td>
@@ -39,6 +39,6 @@
     
 {#    {% endfor %}#}
     
-    <a href="{% url 'authentication:consumer_update' %}">Update</a>
+    <a href="{% url 'authentication:consumer_update' consumers.consumer_id %}">Update</a>
 
 {% endblock %}

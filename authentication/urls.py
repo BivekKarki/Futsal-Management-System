@@ -15,5 +15,5 @@ urlpatterns = [
     path('enter_otp', enter_otp_view, name='enter_otp'),
     path('password_reset', password_reset_view, name='password_reset'),
 
-    path('consumer_update', consumer_update_view, name='consumer_update'),
+    path('consumer_update/<str:consumer_id>', consumer_update_view, name='consumer_update'),
 ]
