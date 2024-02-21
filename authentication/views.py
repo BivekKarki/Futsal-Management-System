@@ -62,10 +62,10 @@ def consumer_login_view(request):
 def consumer_dashboardview(request):
     success_message = messages.get_messages(request)
     consumer_id = request.session.get('consumer_id')
-    print(consumer_id)
+    # print(consumer_id)
     consumerr = Consumer.objects.get(consumer_id=consumer_id)
     # consumer = Consumer.objects.all()
-    print(consumerr.name)
+    # print(consumerr.name)
     context = {
         'success_message': success_message,
         'consumers': consumerr,
@@ -75,18 +75,23 @@ def consumer_dashboardview(request):
 
 
 def consumer_update_view(request, consumer_id):
-    consumer_phone = request.session.get("phone")
-    loggedin_user = Consumer(phone=consumer_phone)
-    print(loggedin_user)
+    consumer_details = Consumer.objects.get(consumer_id=consumer_id)
+    print(consumer_details.consumer_id)
+    print(consumer_details.name)
+    context = {
+        'consumers': consumer_details,
+    }
     if request.method == "POST":
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
+        user_id = request.POST.get('user_id')
 
         consumer = Consumer(
             consumer_id=consumer_id,
+            user_id=user_id,
             name=name,
             phone=phone,
             email=email,
@@ -97,7 +102,7 @@ def consumer_update_view(request, consumer_id):
         messages.success(request, 'Profile updated successfully!')
         return redirect("consumer_dashboardview")
 
-    return render(request, 'userDashboard.html')
+    return render(request, 'userUpdateForm.html',context)
 
 
 def consumer_registration_formview(request):
@@ -111,8 +116,11 @@ def consumer_registration_formview(request):
 
         if password != c_password:
             return render(request, "userSignupForm.html", {"message": "password not matching"})
-        if Consumer.objects.filter(phone=phone).exists():
+        elif Consumer.objects.filter(phone=phone).exists():
             messages.error(request, "This phone number is already exist!")
+            return render(request, "userSignupForm.html")
+        elif Consumer.objects.filter(email=email).exists():
+            messages.error(request, "This email address is already exist!")
             return render(request, "userSignupForm.html")
 
         consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
