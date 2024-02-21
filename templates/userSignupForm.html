@@ -62,15 +62,25 @@
             </div>
           </div>
         </div>
+          
+          {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                       <p style="color: green;">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         
 
-        <form>
+        <form method="post">
+            {% csrf_token %}
           <div class="row">
             <div class="col-md-2"></div>
           <div class="col-md-3  pe-4">
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" class="form-control" name="name" id="name"  placeholder="Enter name">
+           
             </div>
           </div>
           <div class="col-md-3  ps-4">

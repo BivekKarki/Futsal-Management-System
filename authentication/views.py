@@ -23,16 +23,16 @@ def consumer_login_view(request):
         if form.is_valid():
             # phone = request.POST.get("phone")  # Use phone instead of email
             # password = request.POST.get("password")
-            phone = form.cleaned_data['phone']  # Use phone instead of email
+            email = form.cleaned_data['email']  # Use phone instead of email
             password = form.cleaned_data['password']
             captcha = form.cleaned_data['captcha']
-            # print(captcha)
+            print("Good")
             # Perform reCAPTCHA validation
             if captcha:
 
                 try:
-                    if User.objects.filter(username=phone).exists():
-                        username = User.objects.get(username=phone)
+                    if User.objects.filter(email=email).exists():
+                        username = User.objects.get(email=email)
                         user = authenticate(username=username, password=password)
                     else:
                         messages.error(request, "User does not exist")
@@ -40,7 +40,7 @@ def consumer_login_view(request):
                     if user is not None:
                         login(request, user)
                         messages.success(request, 'Login successful. Welcome!')
-                        consumer_profile = Consumer.objects.get(phone=phone)
+                        consumer_profile = Consumer.objects.get(email=email)
                         request.session['consumer_id'] = consumer_profile.consumer_id
                         # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
                         return redirect("/authentication/consumer_dashboard")
@@ -56,7 +56,7 @@ def consumer_login_view(request):
         form = LoginForm()
         # print("invalid form")
     # form = AuthenticationForm()
-    return render(request=request, template_name="login.html", context={"login_form": form})
+    return render(request, "login.html", {"login_form": form})
 
 
 def consumer_dashboardview(request):
@@ -87,7 +87,7 @@ def consumer_update_view(request, consumer_id):
         email = request.POST.get('email')
         password = request.POST.get('password')
         address = request.POST.get('address')
-        user_id = request.POST.get('user_id')
+        user_id = consumer_details.user_id
 
         consumer = Consumer(
             consumer_id=consumer_id,
@@ -100,7 +100,7 @@ def consumer_update_view(request, consumer_id):
         )
         consumer.save()
         messages.success(request, 'Profile updated successfully!')
-        return redirect("consumer_dashboardview")
+        return redirect("/authentication/consumer_dashboard")
 
     return render(request, 'userUpdateForm.html',context)
 
@@ -115,6 +115,7 @@ def consumer_registration_formview(request):
         c_password = request.POST.get("c_password")
 
         if password != c_password:
+            messages.error(request, "Password mismatched!")
             return render(request, "userSignupForm.html", {"message": "password not matching"})
         elif Consumer.objects.filter(phone=phone).exists():
             messages.error(request, "This phone number is already exist!")
