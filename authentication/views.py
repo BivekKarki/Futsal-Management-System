@@ -1,7 +1,8 @@
 import random
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
@@ -35,7 +36,7 @@ def consumer_login_view(request):
                         username = User.objects.get(email=email)
                         user = authenticate(username=username, password=password)
                     else:
-                        messages.error(request, "User does not exist")
+                        messages.error(request, "Invalid email or password.")
                         return redirect("/authentication/consumer_login")
                     if user is not None:
                         login(request, user)
@@ -46,7 +47,7 @@ def consumer_login_view(request):
                         return redirect("/authentication/consumer_dashboard")
                     else:
                         print("no user")
-                        messages.error(request, "Invalid email or password.")
+                        messages.error(request, "User does not exist.")
                 except User.DoesNotExist:
                     messages.error(request, 'User does not exist')
 
@@ -59,10 +60,11 @@ def consumer_login_view(request):
     return render(request, "login.html", {"login_form": form})
 
 
+@login_required()
 def consumer_dashboardview(request):
     success_message = messages.get_messages(request)
     consumer_id = request.session.get('consumer_id')
-    # print(consumer_id)
+
     consumerr = Consumer.objects.get(consumer_id=consumer_id)
     # consumer = Consumer.objects.all()
     # print(consumerr.name)
@@ -74,6 +76,7 @@ def consumer_dashboardview(request):
     return render(request, 'userDashboard.html', context)
 
 
+# ============================================= Update Consumer ========================================
 def consumer_update_view(request, consumer_id):
     consumer_details = Consumer.objects.get(consumer_id=consumer_id)
     print(consumer_details.consumer_id)
@@ -102,9 +105,10 @@ def consumer_update_view(request, consumer_id):
         messages.success(request, 'Profile updated successfully!')
         return redirect("/authentication/consumer_dashboard")
 
-    return render(request, 'userUpdateForm.html',context)
+    return render(request, 'userUpdateForm.html', context)
 
 
+# =============================================== Consumer Registration ======================================
 def consumer_registration_formview(request):
     if request.method == 'POST':
         name = request.POST.get("name")
@@ -145,6 +149,13 @@ def consumer_registration_formview(request):
         return redirect("/authentication/consumer_login")
 
     return render(request, "userSignupForm.html")
+
+
+# ====================================== User Signout ======================================
+@login_required
+def consumer_logout_view(request):
+    logout(request)
+    return redirect("/authentication/consumer_login")
 
 
 # ====================================== Forgot Password ====================================

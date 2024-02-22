@@ -1,18 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<p>welcome </p>{% if messages %}
+<p>welcome </p>
+    <div>
+    {% include 'message.html'  %}
+    </div>
         
-            {% for message in messages %}
-                <div class="alert">
-                    <p style="color: green;">{{ message }}</p> 
-                </div>
-                    
-              
-            {% endfor %}
-        
-    {% endif %}
-    
 {#    {% for consumer in consumers %}#}
     <h1>Hello {{ consumers.consumer_id }}</h1>
 
@@ -40,5 +33,7 @@
 {#    {% endfor %}#}
     
     <a href="{% url 'authentication:consumer_update' consumers.consumer_id %}">Update</a>
+    
+    <a href="{% url 'authentication:consumer_logout' %}">Logout</a>
 
 {% endblock %}

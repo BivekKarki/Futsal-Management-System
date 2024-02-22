@@ -1,65 +1,70 @@
-<!--================ Start Alert Message Area =================-->
- {% if messages %}
-        {% for message in messages %}
-        <div id="message" class="container">
-           <div style="color: green;" class="alert alert-success alert-dismissible text-center" role="alert">
-              {{message}}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-           </div>
-        </div>
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <img src="..." class="rounded me-2" alt="...">
-      <strong class="me-auto">Bootstrap</strong>
-      <small>11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+{#<!--================ Start Alert Message Area =================-->#}
+{# {% if success_message %}#}
+{#        {% for message in success_message %}#}
+{#        <div id="message" class="container">#}
+{#           <div style="color: green;" class="alert alert-success alert-dismissible text-center" role="alert">#}
+{#              {{message}}#}
+{#              <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#              <span aria-hidden="true">&times;</span>#}
+{#              </button>#}
+{#           </div>#}
+{#        </div>#}
+{#            #}
+{#        {% endfor %}#}
+{#        {% endif %}#}
+{##}
+{#        {% if error_message  %}#}
+{#        <div id="message" class="container">#}
+{#           <div style="color: red;" class="alert alert-danger alert-dismissible text-center" role="alert">#}
+{#               {{ error_message  }}#}
+{#              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true"> &times;</span> </button>#}
+{#           </div>#}
+{#        </div>#}
+{##}
+{#            #}
+{#        {% endif %}#}
+ <style>
+        .success-message {
+            color: green;
+        }
+
+        .error-message {
+            color: red;
+        }
+    </style>
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+    <div class="success-message">
+        {{ message }}
     </div>
-    <div class="toast-body">
-      <p>Hello, world! This is a toast message.</p>
+    {% endif %}
+    {% endfor %}
+
+    <!-- Display error messages -->
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+    <div class="error-message">
+        {{ message }}
     </div>
-  </div>
-</div>
-        {% endfor %}
-        {% endif %}
-        {% if error %}
-        <div id="message" class="container">
-           <div style="color: red;" class="alert alert-danger alert-dismissible text-center" role="alert">
-              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true"> &times;</span> </button>
-              {{ error }}
-           </div>
-        </div>
-
-             <div class="toast-container" style="position: absolute; top: 10px; right: 10px;">
-                <div class="toast fade show">
-                    <div class="toast-header">
-                        <strong class="me-auto"><i class="bi-globe"></i> Hello, world!</strong>
-                        <small>just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                    </div>
-                    <div class="toast-body">
-                        This is a basic toast message.
-                    </div>
-                </div>
-            </div>
-        {% endif %}
+    {% endif %}
+    {% endfor %}
 
 
-<script>
-    const toastButton = document.querySelector('#toastBtn');
-    const toastContent = document.querySelector('.toast');
-    
-    if(toastButton){
-        console.log(toastButton);
-        toastButton.addEventListener('click',() => {
-            const toast = new bootstrap.Toast(toastContent);
-            toast.show();
-        })
-    }
-</script>
+{#<script>#}
+{#const toastButton = document.querySelector('#toastBtn');#}
+{#    const toastContent = document.querySelector('.toast');#}
+{#    const toast = bootstrap.Toast.getOrCreateInstance(toastContent);#}
+{#    toast.show();#}
+{#    console.log(toastContent);#}
+{#    console.log(toastButton);#}
+{#    if(toastButton){#}
+{#        console.log(toastContent);#}
+{#        toastButton.addEventListener('click',() => {#}
+{#            const toast = new bootstrap.Toast(toastContent);#}
+{#            toast.show();#}
+{#            console.log("Hello world");#}
+{#        })#}
+{#    }#}
+{#</script>#}
 
-<!--================ End Alert Message Area =================-->
-
-
+{#<!--================ End Alert Message Area =================-->#}

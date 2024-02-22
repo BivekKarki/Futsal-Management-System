@@ -72,15 +72,15 @@
             <div class="col-md-3">
               <h2>SIGN IN </h2>
               <p>Don't you have an account?<a href=""> Sign Up</a> </p> 
+                <!-- Message -->
+        <div style="padding-top: 20px;" >
+           {% include 'message.html' %}
+        </div>
 
             </div>
           </div>
         </div>
-          <!-- Alerts -->
-        <section style="padding-top: 20px;" >
-           {%include 'message.html' %}
-        </section>
-
+          
         <form method="post" action="{% url 'authentication:consumer_login' %}">
         {% csrf_token %}
         <div class="row">
@@ -133,8 +133,8 @@
 
 
         </form>
-          
-          
+
+
 
       </div>
     </div>
@@ -147,9 +147,6 @@
 
 <!-- /*<========================================= Footer Section =========================================>*/ -->
 <script type="text/javascript">
-
-
-
   document.addEventListener('click', function(event) {
     if (event.target.classList.contains('toggle-password')) {
         var passwordField = document.getElementById("password-field");
@@ -168,6 +165,11 @@
 });
 
 
+  
+
+
 
 </script>
+
+
  {% endblock %}
