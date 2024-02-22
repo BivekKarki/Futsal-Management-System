@@ -46,7 +46,7 @@ def consumer_login_view(request):
                         return redirect("/authentication/consumer_dashboard")
                     else:
                         print("no user")
-                        messages.error(request, "Invalid phone or password.")
+                        messages.error(request, "Invalid email or password.")
                 except User.DoesNotExist:
                     messages.error(request, 'User does not exist')
 

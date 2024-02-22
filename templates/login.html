@@ -72,17 +72,14 @@
             <div class="col-md-3">
               <h2>SIGN IN </h2>
               <p>Don't you have an account?<a href=""> Sign Up</a> </p> 
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                       <p style="color: green;">{{ message }}</p>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+
             </div>
           </div>
         </div>
-
+          <!-- Alerts -->
+        <section style="padding-top: 20px;" >
+           {%include 'message.html' %}
+        </section>
 
         <form method="post" action="{% url 'authentication:consumer_login' %}">
         {% csrf_token %}
@@ -118,7 +115,7 @@
               <label class="form-check-label" for="exampleCheck1">Agree Terms and Conditions</label>
             </div>
             <div class="form-check">
-              <a href="{% url 'authentication:forgot_password' %}" class="text-body"  style="color: white !important;">Forgot password?</a>
+              <a href="{% url 'authentication:forgot_password' %}"class="text-body"  style="color: white !important;">Forgot password?</a>
             </div>
 
           </div>
@@ -128,7 +125,7 @@
           <div class="col-md-2"></div>
           <div class="col-md-3">
              <div class="signup-button">
-              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="submit" class="btn btn-primary" id="toastBtn" >Login</button>
             </div>
           </div>
         </div>
@@ -136,6 +133,8 @@
 
 
         </form>
+          
+          
 
       </div>
     </div>
@@ -148,6 +147,7 @@
 
 <!-- /*<========================================= Footer Section =========================================>*/ -->
 <script type="text/javascript">
+
 
 
   document.addEventListener('click', function(event) {
@@ -166,6 +166,7 @@
         }
     }
 });
+
 
 
 </script>
