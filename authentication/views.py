@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
@@ -214,6 +215,7 @@ def password_reset_view(request):
     if request.session.has_key('email'):
         email = request.session['email']
         user = Consumer.objects.get(email=email)
+        d_user = User.objects.get(email=email)
         if request.method == "POST":
             new_password = request.POST.get('new_password')
             confirm_new_password = request.POST.get('confirm_new_password')
@@ -229,6 +231,8 @@ def password_reset_view(request):
             elif not error_message:
                 user.password = new_password
                 user.save()
+                d_user.password = make_password(new_password)
+                d_user.save()
                 messages.success(request, "Password Changed Successfully")
                 return redirect("authentication:consumer_login")
 
