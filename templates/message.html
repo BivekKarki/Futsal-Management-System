@@ -1,28 +1,5 @@
 {#<!--================ Start Alert Message Area =================-->#}
-{# {% if success_message %}#}
-{#        {% for message in success_message %}#}
-{#        <div id="message" class="container">#}
-{#           <div style="color: green;" class="alert alert-success alert-dismissible text-center" role="alert">#}
-{#              {{message}}#}
-{#              <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
-{#              <span aria-hidden="true">&times;</span>#}
-{#              </button>#}
-{#           </div>#}
-{#        </div>#}
-{#            #}
-{#        {% endfor %}#}
-{#        {% endif %}#}
-{##}
-{#        {% if error_message  %}#}
-{#        <div id="message" class="container">#}
-{#           <div style="color: red;" class="alert alert-danger alert-dismissible text-center" role="alert">#}
-{#               {{ error_message  }}#}
-{#              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true"> &times;</span> </button>#}
-{#           </div>#}
-{#        </div>#}
-{##}
-{#            #}
-{#        {% endif %}#}
+
  <style>
         .success-message {
             color: green;
@@ -49,22 +26,5 @@
     {% endif %}
     {% endfor %}
 
-
-{#<script>#}
-{#const toastButton = document.querySelector('#toastBtn');#}
-{#    const toastContent = document.querySelector('.toast');#}
-{#    const toast = bootstrap.Toast.getOrCreateInstance(toastContent);#}
-{#    toast.show();#}
-{#    console.log(toastContent);#}
-{#    console.log(toastButton);#}
-{#    if(toastButton){#}
-{#        console.log(toastContent);#}
-{#        toastButton.addEventListener('click',() => {#}
-{#            const toast = new bootstrap.Toast(toastContent);#}
-{#            toast.show();#}
-{#            console.log("Hello world");#}
-{#        })#}
-{#    }#}
-{#</script>#}
 
 {#<!--================ End Alert Message Area =================-->#}
