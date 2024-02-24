@@ -1,7 +1,8 @@
 from django.urls import path
 
 from authentication.views import consumer_login_view, consumer_dashboardview, consumer_registration_formview, \
-    forgot_password_view, send_otp_view, enter_otp_view, password_reset_view, consumer_update_view, consumer_logout_view
+    forgot_password_view, send_otp_view, enter_otp_view, password_reset_view, consumer_update_view, \
+    consumer_logout_view, verification_view
 
 app_name = "authentication"
 

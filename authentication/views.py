@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
 
@@ -37,28 +37,42 @@ def consumer_login_view(request):
             captcha = form.cleaned_data['captcha']
             print("Good")
             # Perform reCAPTCHA validation
-            if captcha:
 
+            if captcha:
+                user = Consumer.objects.get(email=email)
                 try:
-                    if User.objects.filter(email=email).exists():
-                        username = User.objects.get(email=email)
-                        user = authenticate(username=username, password=password)
-                    else:
-                        messages.error(request, "Invalid email or password.")
-                        return redirect("/authentication/consumer_login")
-                    if user is not None:
-                        if not user.status:
-                            messages.error(request, "Account is not Activated.")
+                    if user:
+                        if password == user.password:
+                            if not user.status:
+                                messages.error(request, "Account is not Activated!")
+                            else:
+                                return HttpResponse("authentication:consumer_dashboard")
+
                         else:
-                            login(request, user)
-                            messages.success(request, 'Login successful. Welcome!')
-                            consumer_profile = Consumer.objects.get(email=email)
-                            request.session['consumer_id'] = consumer_profile.consumer_id
-                            # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
-                            return redirect("/authentication/consumer_dashboard")
+                            messages.error(request, "Invalid Credentials!")
                     else:
-                        print("no user")
-                        messages.error(request, "User does not exist.")
+                        messages.error(request, "Invalid Credentials!")
+
+                    # if Consumer.objects.filter(email=email).exists():
+                    #     username = User.objects.get(email=email)
+                    #     user = authenticate(username=username, password=password)
+                    # else:
+                    #     messages.error(request, "Invalid email or password.")
+                    #     return redirect("/authentication/consumer_login")
+                    # if user is not None:
+                    #     if not Consumer.status:
+                    #         messages.error(request, "Account is not Activated.")
+                    #         return redirect("authentication:consumer_login")
+                    #     else:
+                    #         login(request, user)
+                    #         messages.success(request, 'Login successful. Welcome!')
+                    #         consumer_profile = Consumer.objects.get(email=email)
+                    #         request.session['consumer_id'] = consumer_profile.consumer_id
+                    #         # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
+                    #         return redirect("/authentication/consumer_dashboard")
+                    # else:
+                    #     print("no user")
+                    #     messages.error(request, "Invalid email or password.")
                 except User.DoesNotExist:
                     messages.error(request, 'User does not exist')
 
@@ -148,7 +162,7 @@ def consumer_registration_formview(request):
 
         uidb64 = urlsafe_base64_encode(force_bytes(user.email))
         domain = get_current_site(request).domain
-        link = reverse("Activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user)})
+        link = reverse("Activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
         email_subject = "Activate your account"
         activate_url = "http://" + domain + link
         email_from = settings.EMAIL_HOST_USER
@@ -186,7 +200,7 @@ def consumer_registration_formview(request):
 
 def verification_view(request, uidb64, token):
     try:
-        email = force_text(urlsafe_base64_decode(uidb64))
+        email = force_str(urlsafe_base64_decode(uidb64))
         user = Consumer.objects.get(email=email)
         if user.status == True:
             messages.success(request, 'Account Already Activated')
@@ -195,15 +209,9 @@ def verification_view(request, uidb64, token):
             user.status = True
             user.save()
             messages.success(request, 'Account Activated Successfully!')
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
+    except Exception as ex:
         pass
-    if user is not None and account_activation_token.check_token(user, token):
-        user.status = True
-        user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
-    else:
-        return HttpResponse('Activation link is invalid!')
+    return redirect("authentication:consumer_login")
 
     # ====================================== User Signout ======================================
 
