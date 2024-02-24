@@ -6,8 +6,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from .tokens import account_activation_token
 
 from FutsalManagementSystem import settings
 from authentication.forms import LoginForm
@@ -40,12 +47,15 @@ def consumer_login_view(request):
                         messages.error(request, "Invalid email or password.")
                         return redirect("/authentication/consumer_login")
                     if user is not None:
-                        login(request, user)
-                        messages.success(request, 'Login successful. Welcome!')
-                        consumer_profile = Consumer.objects.get(email=email)
-                        request.session['consumer_id'] = consumer_profile.consumer_id
-                        # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
-                        return redirect("/authentication/consumer_dashboard")
+                        if not user.status:
+                            messages.error(request, "Account is not Activated.")
+                        else:
+                            login(request, user)
+                            messages.success(request, 'Login successful. Welcome!')
+                            consumer_profile = Consumer.objects.get(email=email)
+                            request.session['consumer_id'] = consumer_profile.consumer_id
+                            # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
+                            return redirect("/authentication/consumer_dashboard")
                     else:
                         print("no user")
                         messages.error(request, "User does not exist.")
@@ -129,6 +139,28 @@ def consumer_registration_formview(request):
             messages.error(request, "This email address is already exist!")
             return render(request, "userSignupForm.html")
 
+        user = Consumer(
+            name=name,
+            phone=phone,
+            email=email,
+            password=password
+        )
+
+        uidb64 = urlsafe_base64_encode(force_bytes(user.email))
+        domain = get_current_site(request).domain
+        link = reverse("Activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user)})
+        email_subject = "Activate your account"
+        activate_url = "http://" + domain + link
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [email]
+        mydict = {"username": user.name, "activate_url": activate_url}
+        html_template = "account_activation.html"
+        html_message = render_to_string(html_template, context=mydict)
+
+        email = EmailMessage(email_subject, html_message, email_from, recipient_list)
+        email.content_subtype = "html"
+        email.send()
+
         consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
         consumer.first_name = name
         consumer.phone = phone
@@ -146,13 +178,36 @@ def consumer_registration_formview(request):
         user = authenticate(request, username=phone, password=password)
         login(request, user)
 
-        messages.success(request, 'Registration successful! You can now log in.')
+        messages.success(request, 'Registration successful! Please check your email to activate your account.')
         return redirect("/authentication/consumer_login")
 
     return render(request, "userSignupForm.html")
 
 
-# ====================================== User Signout ======================================
+def verification_view(request, uidb64, token):
+    try:
+        email = force_text(urlsafe_base64_decode(uidb64))
+        user = Consumer.objects.get(email=email)
+        if user.status == True:
+            messages.success(request, 'Account Already Activated')
+            return redirect("authentication:consumer_login")
+        else:
+            user.status = True
+            user.save()
+            messages.success(request, 'Account Activated Successfully!')
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+        pass
+    if user is not None and account_activation_token.check_token(user, token):
+        user.status = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
+
+    # ====================================== User Signout ======================================
+
+
 @login_required
 def consumer_logout_view(request):
     logout(request)
