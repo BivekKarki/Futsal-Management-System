@@ -12,7 +12,7 @@ urlpatterns = [
     path('consumer_logout', consumer_logout_view, name='consumer_logout'),
 
     path('consumer_registration_form', consumer_registration_formview, name='consumer_registration_form'),
-    path('activate/<uidb64>/<token>', verification_view, name='verification_view'),
+    path('activate/<uidb64>/<token>', verification_view, name='activate'),
     path('consumer_update/<str:consumer_id>', consumer_update_view, name='consumer_update'),
 
     path('forgot_password', forgot_password_view, name='forgot_password'),

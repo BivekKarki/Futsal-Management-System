@@ -39,19 +39,28 @@ def consumer_login_view(request):
             # Perform reCAPTCHA validation
 
             if captcha:
-                user = Consumer.objects.get(email=email)
+                c_user = User.objects.get(email=email)
+                consumer = Consumer.objects.get(email=email)
                 try:
-                    if user:
-                        if password == user.password:
-                            if not user.status:
-                                messages.error(request, "Account is not Activated!")
-                            else:
-                                return HttpResponse("authentication:consumer_dashboard")
-
+                    if c_user:
+                        # if password == user.password:
+                        if not consumer.status:
+                            messages.error(request, "Account is not Activated!")
                         else:
-                            messages.error(request, "Invalid Credentials!")
+                            username = User.objects.get(email=email)
+                            print(c_user.password)
+                            user = authenticate(username=username, password=password)
+
+                            login(request, user)
+                            messages.success(request, 'Login successful. Welcome!')
+                            consumer_profile = Consumer.objects.get(email=email)
+                            request.session['consumer_id'] = consumer_profile.consumer_id
+                            return redirect("/authentication/consumer_dashboard")
+
                     else:
-                        messages.error(request, "Invalid Credentials!")
+                        messages.error(request, "Invalid Credentials!1")
+                    # else:
+                    #     messages.error(request, "Invalid Credentials!2")
 
                     # if Consumer.objects.filter(email=email).exists():
                     #     username = User.objects.get(email=email)
@@ -162,7 +171,7 @@ def consumer_registration_formview(request):
 
         uidb64 = urlsafe_base64_encode(force_bytes(user.email))
         domain = get_current_site(request).domain
-        link = reverse("Activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
+        link = reverse("activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
         email_subject = "Activate your account"
         activate_url = "http://" + domain + link
         email_from = settings.EMAIL_HOST_USER
@@ -202,7 +211,7 @@ def verification_view(request, uidb64, token):
     try:
         email = force_str(urlsafe_base64_decode(uidb64))
         user = Consumer.objects.get(email=email)
-        if user.status == True:
+        if user.status:
             messages.success(request, 'Account Already Activated')
             return redirect("authentication:consumer_login")
         else:
