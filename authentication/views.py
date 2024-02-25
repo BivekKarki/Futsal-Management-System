@@ -171,18 +171,18 @@ def consumer_registration_formview(request):
 
         uidb64 = urlsafe_base64_encode(force_bytes(user.email))
         domain = get_current_site(request).domain
-        link = reverse("activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
+        link = reverse("authentication:activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
         email_subject = "Activate your account"
-        activate_url = "http://" + domain + link
+        activate_url = "http://"+domain+link
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [email]
         mydict = {"username": user.name, "activate_url": activate_url}
         html_template = "account_activation.html"
         html_message = render_to_string(html_template, context=mydict)
 
-        email = EmailMessage(email_subject, html_message, email_from, recipient_list)
-        email.content_subtype = "html"
-        email.send()
+        email_message = EmailMessage(email_subject, html_message, email_from, recipient_list)
+        email_message.content_subtype = "html"
+        email_message.send()
 
         consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
         consumer.first_name = name

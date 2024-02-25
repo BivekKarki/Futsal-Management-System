@@ -1,13 +1,24 @@
-{% extends 'base.html' %}
+<!doctype html>
 {% load static %}
-{% block content %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div style="background-color: #c2c2c2; padding: 15px;">
-    <h2 style="margin: 0; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #5865F2; color: #ffffff;">Verify Email</h2>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    
+  <div style="background-color: #c2c2c2; padding: 15px;">
+    <h2 style="margin: 0; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #1d3140 ; color: #ffffff;">Verify Email</h2>
     <div style="margin: 0; padding: 15px; background-color: #ffffff;">
         <p>Hi {{ username }},</p>
         <p>You created an account on Delight.com, you need to verify your email. Please click on the button below to verify your email.</p>
-        <a href="{{ activate_url }}" style="border: 0; color: #ffffff; background-color: #5865F2; padding: 15px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+        <a href="{{ activate_url }}" style="border: 0; color: #ffffff; background-color: #1d3140 ; padding: 15px; font-weight: bold; text-decoration: none; border-radius: 5px;">
             Verify Email
         </a>
         <p style="margin-top: 40px;">Or you can copy the link below to your browser</p>
@@ -15,10 +26,12 @@
         <p>The Futsal Management Team</p>
     </div>
     <div style="text-align: center; margin-top: 20px;">
-        <p>© {% now 'Y' %} <a href="https://delighto.medium.com">Blog</a></p>
-        <p>Follow us on <a href="https://twitter.com/DelightGbolahan">Twitter</a></p>
+        <p>© {% now 'Y' %} <a href="">Blog</a></p>
+        <p>Follow us on <a href="">Twitter</a></p>
     </div>
 </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-{% endblock %}
+  </body>
+</html>
