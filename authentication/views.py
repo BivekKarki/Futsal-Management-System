@@ -48,7 +48,7 @@ def consumer_login_view(request):
                             messages.error(request, "Account is not Activated!")
                         else:
                             username = User.objects.get(email=email)
-                            print(c_user.password)
+
                             user = authenticate(username=username, password=password)
 
                             login(request, user)
@@ -58,30 +58,7 @@ def consumer_login_view(request):
                             return redirect("/authentication/consumer_dashboard")
 
                     else:
-                        messages.error(request, "Invalid Credentials!1")
-                    # else:
-                    #     messages.error(request, "Invalid Credentials!2")
-
-                    # if Consumer.objects.filter(email=email).exists():
-                    #     username = User.objects.get(email=email)
-                    #     user = authenticate(username=username, password=password)
-                    # else:
-                    #     messages.error(request, "Invalid email or password.")
-                    #     return redirect("/authentication/consumer_login")
-                    # if user is not None:
-                    #     if not Consumer.status:
-                    #         messages.error(request, "Account is not Activated.")
-                    #         return redirect("authentication:consumer_login")
-                    #     else:
-                    #         login(request, user)
-                    #         messages.success(request, 'Login successful. Welcome!')
-                    #         consumer_profile = Consumer.objects.get(email=email)
-                    #         request.session['consumer_id'] = consumer_profile.consumer_id
-                    #         # print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
-                    #         return redirect("/authentication/consumer_dashboard")
-                    # else:
-                    #     print("no user")
-                    #     messages.error(request, "Invalid email or password.")
+                        messages.error(request, "Invalid Credentials!")
                 except User.DoesNotExist:
                     messages.error(request, 'User does not exist')
 
