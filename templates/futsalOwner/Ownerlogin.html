@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+      <style >
+          .login-section{
+	background-color: #162732;
+	padding: 3em 0;
+    overflow: hidden;
+    color: #fff;
+}
+.login-section .login-header{
+
+	margin-bottom: 2em;
+
+}
+.login-header a{
+	color: #f5e021;
+	text-decoration: none;
+}
+.login-header a:hover{
+	text-decoration: underline;
+}
+.login-section .form-group{
+	padding-bottom: 2em;
+
+}
+.login-section .form-group .form-control{
+	background-color: #162732;
+	border: 1px solid #85a0b2;
+	color: #fff;
+}
+.login-button{
+	padding-top: 2em;
+}
+.login-button button{
+	padding: 10px 2em;
+	background-color: transparent;
+    border: 1px solid #4AFF93;
+    color: #4AFF93;
+}
+.login-button button:hover{
+	background-color: #4AFF93;
+    border: 1px solid #4AFF93;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+.login-section .form-group label{
+	padding-bottom: 1em;
+}
+.login-section .form-group{
+	position: relative;
+}
+.field-icon {
+    position: absolute;
+    top: 53%;
+    right: 15px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.9);
+}
+      </style>
+
+
+<!-- /*<========================================= Login Section =========================================>*/ -->
+<section class="login-section">
+    <div class="container">
+      <div class="login-single">
+        <div class="login-header">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-3">
+              <h2>SIGN IN </h2>
+              <p>Don't you have an account?<a href=""> Sign Up</a> </p> 
+                <!-- Message -->
+        <div style="padding-top: 20px;" >
+           {% include 'message.html' %}
+        </div>
+
+            </div>
+          </div>
+        </div>
+          
+        <form method="post" action="{% url 'authentication:consumer_login' %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-2"></div>
+          <div class="col-md-4 pe-4">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" name="email" class="form-control" id="email"  placeholder="Email">
+
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password-field" name="password" type="password" class="form-control" placeholder="Password" required>
+              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            </div>
+              <div style="padding-bottom: 1em">
+                  {{ login_form.captcha }}
+              </div>
+                  
+               
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+            
+           
+
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-4 d-flex justify-content-between align-items-center pb-4">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Agree Terms and Conditions</label>
+            </div>
+            <div class="form-check">
+              <a href="{% url 'authentication:forgot_password' %}"class="text-body"  style="color: white !important;">Forgot password?</a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3">
+             <div class="signup-button">
+              <button type="submit" class="btn btn-primary" id="toastBtn" >Login</button>
+            </div>
+          </div>
+        </div>
+
+
+
+        </form>
+
+
+
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+<!-- /*<========================================= Footer Section =========================================>*/ -->
+<script type="text/javascript">
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('toggle-password')) {
+        var passwordField = document.getElementById("password-field");
+        var toggleIcon = event.target;
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
+});
+
+
+  
+
+
+
+</script>
+
+
+ {% endblock %}

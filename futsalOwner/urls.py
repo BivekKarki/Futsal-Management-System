@@ -1,7 +1,11 @@
 from django.urls import path
 
+from futsalOwner.views import owner_login_view
+
+app_name = "futsalOwner"
+
 urlpatterns = [
-    path('', consumer_login_view, name='consumer_login'),
+    path('', owner_login_view, name='owner_login'),
 
 
 ]

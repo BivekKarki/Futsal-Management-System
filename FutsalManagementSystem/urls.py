@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls', namespace='homepage')),
     path('authentication/', include('authentication.urls', namespace='authentication')),
-    path('futsalOwner/', include('futsalOwner.urls', namespace='futsalOwner'))
+    path('futsalOwner/', include('futsalOwner.urls', namespace='futsalOwner')),
 ]
