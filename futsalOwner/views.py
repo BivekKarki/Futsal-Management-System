@@ -25,11 +25,11 @@ def owner_login_view(request):
 
             if captcha:
                 c_user = User.objects.get(email=email)
-                consumer = FutsalOwner.objects.get(email=email)
+                owner = FutsalOwner.objects.get(email=email)
                 try:
                     if c_user:
                         # if password == user.password:
-                        if not consumer.status:
+                        if not owner.status:
                             messages.error(request, "Account is not Activated!")
                         else:
                             username = User.objects.get(email=email)
@@ -38,8 +38,8 @@ def owner_login_view(request):
 
                             login(request, user)
                             messages.success(request, 'Login successful. Welcome!')
-                            consumer_profile = FutsalOwner.objects.get(email=email)
-                            request.session['consumer_id'] = consumer_profile.consumer_id
+                            owner_profile = FutsalOwner.objects.get(email=email)
+                            request.session['owner_id'] = owner_profile.owner_id
                             return redirect("/authentication/consumer_dashboard")
 
                     else:

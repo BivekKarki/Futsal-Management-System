@@ -39,28 +39,34 @@ def consumer_login_view(request):
             # Perform reCAPTCHA validation
 
             if captcha:
-                c_user = User.objects.get(email=email)
-                consumer = Consumer.objects.get(email=email)
+
                 try:
+                    c_user = User.objects.get(email=email)
+                    print(c_user.check_password(password))
+                    consumer = Consumer.objects.get(email=email)
                     if c_user:
                         # if password == user.password:
                         if not consumer.status:
                             messages.error(request, "Account is not Activated!")
+                        elif password == c_user.password:
+                            messages.error(request, "Invalid Credentials!p")
                         else:
                             username = User.objects.get(email=email)
 
                             user = authenticate(username=username, password=password)
-
-                            login(request, user)
-                            messages.success(request, 'Login successful. Welcome!')
-                            consumer_profile = Consumer.objects.get(email=email)
-                            request.session['consumer_id'] = consumer_profile.consumer_id
-                            return redirect("/authentication/consumer_dashboard")
+                            if not user:
+                                messages.error(request, "Invalid Credentials! not")
+                            else:
+                                login(request, user)
+                                messages.success(request, 'Login successful. Welcome!')
+                                consumer_profile = Consumer.objects.get(email=email)
+                                request.session['consumer_id'] = consumer_profile.consumer_id
+                                return redirect("/authentication/consumer_dashboard")
 
                     else:
                         messages.error(request, "Invalid Credentials!")
                 except User.DoesNotExist:
-                    messages.error(request, 'User does not exist')
+                    messages.error(request, 'Invalid Credentials!2')
 
             else:
                 messages.error(request, "Invalid recaptcha")
