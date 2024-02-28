@@ -13,7 +13,7 @@ def owner_login_view(request):
     if request.method == "POST":
         form = OwnerLoginForm(request.POST)
         print(form.is_valid())
-        print("Hello bivek")
+        print("Hello Owner")
         if form.is_valid():
             # phone = request.POST.get("phone")  # Use phone instead of email
             # password = request.POST.get("password")
@@ -24,28 +24,34 @@ def owner_login_view(request):
             # Perform reCAPTCHA validation
 
             if captcha:
-                c_user = User.objects.get(email=email)
-                owner = FutsalOwner.objects.get(email=email)
+
                 try:
+                    c_user = User.objects.get(email=email)
+                    print(c_user.check_password(password))
+                    owner = FutsalOwner.objects.get(email=email)
                     if c_user:
                         # if password == user.password:
                         if not owner.status:
                             messages.error(request, "Account is not Activated!")
+                        elif password == c_user.password:
+                            messages.error(request, "Invalid Credentials!p")
                         else:
                             username = User.objects.get(email=email)
 
                             user = authenticate(username=username, password=password)
-
-                            login(request, user)
-                            messages.success(request, 'Login successful. Welcome!')
-                            owner_profile = FutsalOwner.objects.get(email=email)
-                            request.session['owner_id'] = owner_profile.owner_id
-                            return redirect("/authentication/consumer_dashboard")
+                            if not user:
+                                messages.error(request, "Invalid Credentials! not")
+                            else:
+                                login(request, user)
+                                messages.success(request, 'Login successful. Welcome!')
+                                consumer_profile = FutsalOwner.objects.get(email=email)
+                                request.session['consumer_id'] = consumer_profile.consumer_id
+                                return redirect("/authentication/consumer_dashboard")
 
                     else:
                         messages.error(request, "Invalid Credentials!")
                 except User.DoesNotExist:
-                    messages.error(request, 'User does not exist')
+                    messages.error(request, 'Invalid Credentials!2')
 
             else:
                 messages.error(request, "Invalid recaptcha")
