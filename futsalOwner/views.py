@@ -1,13 +1,89 @@
+import random
+
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+from FutsalManagementSystem import settings
+from authentication.tokens import account_activation_token
 
 from futsalOwner.models import FutsalOwner
 from futsalOwner.forms import OwnerLoginForm
 
 
 # Create your views here.
+def owner_registration_formview(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        email = request.POST.get("email")
+        address = request.POST.get("address")
+        password = request.POST.get("password")
+        c_password = request.POST.get("c_password")
+
+        if password != c_password:
+            messages.error(request, "Password mismatched!")
+            return render(request, "userSignupForm.html", {"message": "password not matching"})
+        elif FutsalOwner.objects.filter(phone=phone).exists():
+            messages.error(request, "This phone number is already exist!")
+            return render(request, "userSignupForm.html")
+        elif FutsalOwner.objects.filter(email=email).exists():
+            messages.error(request, "This email address is already exist!")
+            return render(request, "userSignupForm.html")
+
+        user = FutsalOwner(
+            name=name,
+            phone=phone,
+            email=email,
+            password=password
+        )
+
+        uidb64 = urlsafe_base64_encode(force_bytes(user.email))
+        domain = get_current_site(request).domain
+        link = reverse("authentication:activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
+        email_subject = "Activate your account"
+        activate_url = "http://"+domain+link
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [email]
+        mydict = {"username": user.name, "activate_url": activate_url}
+        html_template = "account_activation.html"
+        html_message = render_to_string(html_template, context=mydict)
+
+        email_message = EmailMessage(email_subject, html_message, email_from, recipient_list)
+        email_message.content_subtype = "html"
+        email_message.send()
+
+        consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
+        consumer.first_name = name
+        consumer.phone = phone
+        consumer.save()
+
+        FutsalOwner.objects.create(
+            user=consumer,
+            name=name,
+            phone=phone,
+            email=email,
+            address=address,
+            password=password
+        )
+
+        messages.success(request, 'Registration successful! Please check your email to activate your account.')
+        return redirect("/authentication/consumer_login")
+
+    return render(request, "userSignupForm.html")
+
+
 def owner_login_view(request):
     # print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
     if request.method == "POST":
