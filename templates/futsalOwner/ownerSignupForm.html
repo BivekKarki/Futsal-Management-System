@@ -63,13 +63,9 @@
           </div>
         </div>
           
-          {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                       <p style="color: green;">{{ message }}</p>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+         <div style="padding-top: 20px;" >
+           {% include 'message.html' %}
+        </div>
         
 
         <form method="post">
