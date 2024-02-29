@@ -136,3 +136,17 @@ def owner_login_view(request):
         # print("invalid form")
     # form = AuthenticationForm()
     return render(request, "futsalOwner/Ownerlogin.html", {"login_form": form})
+
+
+@login_required()
+def owner_dashboardview(request):
+    success_message = messages.get_messages(request)
+    consumer_id = request.session.get('consumer_id')
+
+    owner = FutsalOwner.objects.get(consumer_id=consumer_id)
+    context = {
+        'success_message': success_message,
+        'owner': owner,
+    }
+    print("Dashboard")
+    return render(request, 'futsalOwner/ownerDashboard.html', context)
