@@ -40,6 +40,11 @@ def owner_registration_formview(request):
             return render(request, "userSignupForm.html")
         elif FutsalOwner.objects.filter(email=email).exists():
             messages.error(request, "This email address is already exist!")
+        elif User.objects.filter(username=phone).exists():
+            messages.error(request, "This phone number is already exist!")
+            return render(request, "userSignupForm.html")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "This email address is already exist!")
             return render(request, "userSignupForm.html")
 
         user = FutsalOwner(
@@ -51,7 +56,7 @@ def owner_registration_formview(request):
 
         uidb64 = urlsafe_base64_encode(force_bytes(user.email))
         domain = get_current_site(request).domain
-        link = reverse("authentication:activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
+        link = reverse("futsalOwner:activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
         email_subject = "Activate your account"
         activate_url = "http://"+domain+link
         email_from = settings.EMAIL_HOST_USER
@@ -64,13 +69,13 @@ def owner_registration_formview(request):
         email_message.content_subtype = "html"
         email_message.send()
 
-        consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
-        consumer.first_name = name
-        consumer.phone = phone
-        consumer.save()
+        owner = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
+        owner.first_name = name
+        owner.phone = phone
+        owner.save()
 
         FutsalOwner.objects.create(
-            user=consumer,
+            user=owner,
             name=name,
             phone=phone,
             email=email,
@@ -83,6 +88,21 @@ def owner_registration_formview(request):
 
     return render(request, "userSignupForm.html")
 
+
+def verification_view(request, uidb64, token):
+    try:
+        email = force_str(urlsafe_base64_decode(uidb64))
+        user = FutsalOwner.objects.get(email=email)
+        if user.status:
+            messages.success(request, 'Account Already Activated')
+            return redirect("futsalOwner:owner_login")
+        else:
+            user.status = True
+            user.save()
+            messages.success(request, 'Account Activated Successfully!')
+    except Exception as ex:
+        pass
+    return redirect("futsalOwner:owner_login")
 
 def owner_login_view(request):
     # print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
@@ -120,9 +140,9 @@ def owner_login_view(request):
                             else:
                                 login(request, user)
                                 messages.success(request, 'Login successful. Welcome!')
-                                consumer_profile = FutsalOwner.objects.get(email=email)
-                                request.session['consumer_id'] = consumer_profile.consumer_id
-                                return redirect("/authentication/consumer_dashboard")
+                                owner_profile = FutsalOwner.objects.get(email=email)
+                                request.session['owner_id'] = owner_profile.owner_id
+                                return redirect("/futsalOwner/owner_dashboard")
 
                     else:
                         messages.error(request, "Invalid Credentials!")

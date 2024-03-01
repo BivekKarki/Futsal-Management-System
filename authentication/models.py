@@ -22,3 +22,9 @@ class Consumer(models.Model):
 
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Add additional fields for user profile
+
+class OwnerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
