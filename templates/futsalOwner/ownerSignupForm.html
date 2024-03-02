@@ -58,7 +58,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-3">
               <h2>Sign Up</h2>
-              <p>Do you have account already?<a href=""> Sign in</a> </p>
+              <p>Do you have account already?<a href="{% url 'futsalOwner:owner_login' %}"> Sign in</a> </p>
             </div>
           </div>
         </div>
@@ -68,21 +68,21 @@
         </div>
         
 
-        <form method="post">
+        <form method="post" action="{% url 'futsalOwner:owner_registration_form' %}">
             {% csrf_token %}
           <div class="row">
             <div class="col-md-2"></div>
           <div class="col-md-3  pe-4">
             <div class="form-group">
               <label for="name">Name</label>
-              <input type="text" class="form-control" name="name" id="name"  placeholder="Enter name">
+              <input type="text" class="form-control" name="name" id="name"  placeholder="Enter name" required>
            
             </div>
           </div>
           <div class="col-md-3  ps-4">
             <div class="form-group">
               <label for="phone">Phone</label>
-              <input type="text" class="form-control" name="phone" id="phone"  placeholder="Phone">
+              <input type="text" class="form-control" name="phone" id="phone"  placeholder="Phone" required>
             </div>
           </div>
           <div class="col-md-2"></div>
@@ -93,13 +93,13 @@
           <div class="col-md-3 pe-4">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="text" class="form-control" name="email"  id="email"  placeholder="Email">
+              <input type="text" class="form-control" name="email"  id="email"  placeholder="Email" required>
             </div>
           </div>
           <div class="col-md-3  ps-4">
             <div class="form-group">
               <label for="address">Address</label>
-              <input type="text" class="form-control" name="address"  id="address"  placeholder="Address">
+              <input type="text" class="form-control" name="address"  id="address"  placeholder="Address" required>
             </div>
           </div>
           <div class="col-md-4"></div>
@@ -110,13 +110,13 @@
           <div class="col-md-3 pe-4">
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="text" class="form-control" name="password"  id="password"  placeholder="Password">
+              <input type="text" class="form-control" name="password"  id="password"  placeholder="Password" required>
             </div>
           </div>
           <div class="col-md-3  ps-4">
             <div class="form-group">
               <label for="c_password">Confirm Password</label>
-              <input type="text" class="form-control" name="c_password"  id="c_password"  placeholder="Confirm Password">
+              <input type="text" class="form-control" name="c_password"  id="c_password"  placeholder="Confirm Password" required>
             </div>
           </div>
           <div class="col-md-4"></div>
@@ -126,7 +126,7 @@
           <div class="col-md-2"></div>
           <div class="col-md-3">
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" >
               <label class="form-check-label" for="exampleCheck1">Agree Terms and Conditions</label>
             </div>
           </div>

@@ -3,7 +3,7 @@ from authentication.models import Consumer
 
 
 class ConsumerAdmin(admin.ModelAdmin):
-    list_display = ('consumer_id', 'name', 'phone', 'email')
+    list_display = ('user_id', 'name', 'phone', 'email')
 
 
 # Register your models here.

@@ -24,7 +24,7 @@ from django_recaptcha.fields import ReCaptchaField
 
 # Create your views here.
 def consumer_login_view(request):
-    # print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
+    # print("Welllllllllllllllllllllllllllllllllllllllllllllllll")
     if request.method == "POST":
         form = LoginForm(request.POST)
         print(form.is_valid())
@@ -35,7 +35,7 @@ def consumer_login_view(request):
             email = form.cleaned_data['email']  # Use phone instead of email
             password = form.cleaned_data['password']
             captcha = form.cleaned_data['captcha']
-            print("Good")
+            print(captcha)
             # Perform reCAPTCHA validation
 
             if captcha:
@@ -239,7 +239,7 @@ def send_otp_view(request):
         messages.success(request, "Your one time password Send To Your Email")
         return redirect('authentication:enter_otp')
     else:
-        error_message = "Invalid Email, Please Enter Correct Email"
+        error_message = "Your one time password Send To Your Email1"
         return render(request, 'forgot_password.html', {"error_message": error_message})
 
 

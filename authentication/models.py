@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser, User
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -17,5 +18,6 @@ class Consumer(models.Model):
     status = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%d   %s %s  %s  %s" % (self.consumer_id, self.name, self.phone, self.email, self.password)
+        return "%d   %s %s  %s  %s" % (self.user.id, self.name, self.phone, self.email, self.password)
+
 
