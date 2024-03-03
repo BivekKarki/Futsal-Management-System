@@ -7,7 +7,7 @@ from django.utils import timezone
 
 # Create your models here.
 class FutsalOwner(models.Model):
-    owner_id = models.IntegerField(primary_key=True)
+    owner_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=50)

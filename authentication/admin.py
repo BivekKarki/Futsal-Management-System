@@ -1,5 +1,5 @@
 from django.contrib import admin
-from authentication.models import Consumer
+from authentication.models import Consumer, UserRole
 
 
 class ConsumerAdmin(admin.ModelAdmin):
@@ -8,3 +8,4 @@ class ConsumerAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Consumer, ConsumerAdmin)
+admin.site.register(UserRole)

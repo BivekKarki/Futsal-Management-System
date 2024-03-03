@@ -18,7 +18,7 @@ from .tokens import account_activation_token
 
 from FutsalManagementSystem import settings
 from authentication.forms import LoginForm
-from authentication.models import Consumer
+from authentication.models import Consumer, UserRole
 from django_recaptcha.fields import ReCaptchaField
 
 
@@ -134,6 +134,7 @@ def consumer_registration_formview(request):
         address = request.POST.get("address")
         password = request.POST.get("password")
         c_password = request.POST.get("c_password")
+        user_role = "consumer"
 
         if password != c_password:
             messages.error(request, "Password mismatched!")
@@ -170,6 +171,7 @@ def consumer_registration_formview(request):
         consumer = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
         consumer.first_name = name
         consumer.phone = phone
+        print("consumerrrr", consumer)
         consumer.save()
 
         Consumer.objects.create(
@@ -180,6 +182,9 @@ def consumer_registration_formview(request):
             address=address,
             password=password
         )
+
+        # Create UserRole instance
+        UserRole.objects.create(user=consumer, user_role=user_role)
         # print("user created!")
         user = authenticate(request, username=phone, password=password)
         login(request, user)

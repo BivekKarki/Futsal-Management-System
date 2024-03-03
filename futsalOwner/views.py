@@ -16,6 +16,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from FutsalManagementSystem import settings
+from authentication.models import UserRole
 from authentication.tokens import account_activation_token
 
 from futsalOwner.models import FutsalOwner
@@ -31,6 +32,7 @@ def owner_registration_formview(request):
         address = request.POST.get("address")
         password = request.POST.get("password")
         c_password = request.POST.get("c_password")
+        user_role = "owner"
 
         if password != c_password:
             messages.error(request, "Password mismatched!")
@@ -56,9 +58,15 @@ def owner_registration_formview(request):
 
         uidb64 = urlsafe_base64_encode(force_bytes(user.email))
         domain = get_current_site(request).domain
-        link = reverse("futsalOwner:activate", kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
+
+        link = reverse("futsalOwner:activate",
+                       kwargs={"uidb64": uidb64, "token": account_activation_token.make_token(user), })
         email_subject = "Activate your account"
-        activate_url = "http://"+domain+link
+        activate_url = "http://" + domain + link
+        print("testinggggggg")
+        print(domain)
+        print(link)
+        print(activate_url)
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [email]
         mydict = {"username": user.name, "activate_url": activate_url}
@@ -72,6 +80,7 @@ def owner_registration_formview(request):
         owner = User.objects.create_user(username=phone, first_name=name, email=email, password=password)
         owner.first_name = name
         owner.phone = phone
+        print("helllloooooo", owner)
         owner.save()
 
         FutsalOwner.objects.create(
@@ -80,8 +89,12 @@ def owner_registration_formview(request):
             phone=phone,
             email=email,
             address=address,
-            password=password
+            password=password,
+
         )
+
+        # Create UserRole instance
+        UserRole.objects.create(user=owner, user_role=user_role)
 
         messages.success(request, 'Registration successful! Please check your email to activate your account.')
         return redirect("/authentication/consumer_login")
@@ -103,6 +116,7 @@ def verification_view(request, uidb64, token):
     except Exception as ex:
         pass
     return redirect("futsalOwner:owner_login")
+
 
 def owner_login_view(request):
     # print("Welllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
@@ -138,11 +152,17 @@ def owner_login_view(request):
                             if not user:
                                 messages.error(request, "Invalid Credentials! not")
                             else:
-                                login(request, user)
-                                messages.success(request, 'Login successful. Welcome!')
-                                owner_profile = FutsalOwner.objects.get(email=email)
-                                request.session['owner_id'] = owner_profile.owner_id
-                                return redirect("/futsalOwner/owner_dashboard")
+                                try:
+                                    user_role = user.userrole.user_role
+                                    if user_role == 'owner':
+                                        login(request, user)
+                                        messages.success(request, 'Login successful. Welcome!')
+                                        owner_profile = FutsalOwner.objects.get(email=email)
+                                        request.session['owner_id'] = owner_profile.owner_id
+                                        return redirect("/futsalOwner/owner_dashboard")
+                                except UserRole.DoesNotExist:
+                                    return render(request, "futsalOwner/Ownerlogin.html", {"login_form": form})
+
 
                     else:
                         messages.error(request, "Invalid Credentials!")
@@ -161,9 +181,9 @@ def owner_login_view(request):
 @login_required()
 def owner_dashboardview(request):
     success_message = messages.get_messages(request)
-    consumer_id = request.session.get('consumer_id')
+    owner_id = request.session.get('owner_id')
 
-    owner = FutsalOwner.objects.get(consumer_id=consumer_id)
+    owner = FutsalOwner.objects.get(owner_id=owner_id)
     context = {
         'success_message': success_message,
         'owner': owner,
